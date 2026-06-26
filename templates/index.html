@@ -49,6 +49,7 @@
         <button onclick="searchASIN()">Search</button>
         <button onclick="showAll()">Show All</button>
         <button onclick="reloadData()" style="background:#28a745;color:#fff;">Reload Data</button>
+        <button onclick="fetchASIN()" style="background:#0066c0;color:#fff;">Fetch from API</button>
         <button class="clear" onclick="clearAll()">Clear All</button>
     </div>
 
@@ -93,7 +94,13 @@
                 </td>
                 <td>{{ product.get('brand', '') or '' }}</td>
                 <td>{{ product.get('origin', 'N/A') or 'N/A' }}</td>
-                <td>{% if product.get('price') %}${{ "%.2f"|format(product['price']) }}{% endif %}</td>
+                <td>
+                    {% if product.get('price') and product['price'] is number %}
+                        ${{ "%.2f"|format(product['price']|float) }}
+                    {% elif product.get('price') %}
+                        ${{ product['price'] }}
+                    {% endif %}
+                </td>
                 <td>{{ product.get('bsr', '') or '' }}</td>
                 <td>{{ product.get('ratings', '') or '' }}</td>
                 <td>{{ product.get('review_count', '') or '' }}</td>
@@ -110,7 +117,6 @@
     </table>
     </div>
 
-    <!-- Customer Feedback Section -->
     <div class="section">
     <h2>Customer Feedback - Review Topics</h2>
     {% set has_feedback = [] %}
@@ -132,14 +138,6 @@
                     {% if topic.occurrencePercentage %}<span>Occurrence: <strong>{{ topic.occurrencePercentage }}%</strong></span>{% endif %}
                     {% if topic.starRatingImpact %}<span>Rating Impact: <strong>{{ topic.starRatingImpact }}</strong></span>{% endif %}
                 </div>
-                {% if topic.subtopics %}
-                <div class="subtopics">
-                    Subtopics:
-                    {% for st in topic.subtopics %}
-                    <span>{{ st.subtopic }}{% if st.mentions %} ({{ st.mentions }}){% endif %}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
                 {% if topic.reviewSnippets %}
                 <ul class="snippets">
                     {% for snippet in topic.reviewSnippets %}
@@ -161,14 +159,6 @@
                     {% if topic.occurrencePercentage %}<span>Occurrence: <strong>{{ topic.occurrencePercentage }}%</strong></span>{% endif %}
                     {% if topic.starRatingImpact %}<span>Rating Impact: <strong>{{ topic.starRatingImpact }}</strong></span>{% endif %}
                 </div>
-                {% if topic.subtopics %}
-                <div class="subtopics">
-                    Subtopics:
-                    {% for st in topic.subtopics %}
-                    <span>{{ st.subtopic }}{% if st.mentions %} ({{ st.mentions }}){% endif %}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
                 {% if topic.reviewSnippets %}
                 <ul class="snippets">
                     {% for snippet in topic.reviewSnippets %}
@@ -183,13 +173,13 @@
         {% endif %}
     {% endfor %}
     {% if not has_feedback %}
-    <p class="no-feedback">No customer feedback review topics data available. Add review topics to your product JSON files.</p>
+    <p class="no-feedback">No customer feedback review topics data available.</p>
     {% endif %}
     </div>
 
     {% else %}
     <div class="empty-state">
-        <p>No products loaded. Place JSON files in the data/ folder and click Reload Data.</p>
+        <p>No products loaded.</p>
     </div>
     {% endif %}
 
@@ -198,79 +188,56 @@
             const query = document.getElementById('asinSearch').value.trim().toUpperCase();
             const rows = document.querySelectorAll('tbody tr[data-asin]');
             let showing = 0;
-
             rows.forEach(row => {
                 const asin = (row.getAttribute('data-asin') || '').toUpperCase();
-                if (!query || asin.includes(query)) {
-                    row.style.display = '';
-                    showing++;
-                } else {
-                    row.style.display = 'none';
-                }
+                row.style.display = (!query || asin.includes(query)) ? '' : 'none';
+                if(row.style.display === '') showing++;
             });
-
             document.getElementById('showingCount').textContent = showing;
         }
-
         function showAll() {
             document.getElementById('asinSearch').value = '';
-            const rows = document.querySelectorAll('tbody tr[data-asin]');
-            let count = 0;
-            rows.forEach(row => {
-                row.style.display = '';
-                count++;
-            });
-            document.getElementById('showingCount').textContent = count;
+            document.querySelectorAll('tbody tr[data-asin]').forEach(row => row.style.display = '');
+            searchASIN();
         }
-
-        async function clearAll() {
-            await fetch('/api/products', { method: 'DELETE' });
-            location.reload();
-        }
-
-        async function reloadData() {
-            await fetch('/api/reload', { method: 'POST' });
-            location.reload();
-        }
-
-        async function uploadFile() {
-            const fileInput = document.getElementById('fileUpload');
-            if (!fileInput.files.length) return;
-
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.style.display = 'none';
-
-            const endpoint = file.name.endsWith('.json') ? '/api/upload/json' : '/api/upload/excel';
-
+        async function fetchASIN() {
+            const asin = document.getElementById('asinSearch').value.trim();
+            if (!asin) return;
+            const errEl = document.getElementById('errorMsg');
+            errEl.style.display = 'none';
             try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    alert(result.message);
-                    location.reload();
-                } else {
-                    const err = await response.json();
-                    errorMsg.textContent = 'Error: ' + err.detail;
-                    errorMsg.style.display = 'block';
-                }
+                const res = await fetch('/api/fetch/' + encodeURIComponent(asin), { method: 'POST' });
+                if (!res.ok) throw new Error(res.statusText);
             } catch (e) {
-                errorMsg.textContent = 'Upload error: ' + e.message;
-                errorMsg.style.display = 'block';
+                errEl.textContent = 'Fetch failed: ' + e.message;
+                errEl.style.display = '';
+                return;
             }
+            location.reload();
         }
-
-        // Enter key triggers search
-        document.getElementById('asinSearch').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchASIN();
-        });
+        async function clearAll() {
+            if (!confirm('Clear all product data?')) return;
+            try {
+                const res = await fetch('/api/products', { method: 'DELETE' });
+                if (!res.ok) throw new Error(res.statusText);
+            } catch (e) {
+                document.getElementById('errorMsg').textContent = 'Failed to clear: ' + e.message;
+                document.getElementById('errorMsg').style.display = '';
+                return;
+            }
+            location.reload();
+        }
+        async function reloadData() {
+            try {
+                const res = await fetch('/api/reload', { method: 'POST' });
+                if (!res.ok) throw new Error(res.statusText);
+            } catch (e) {
+                document.getElementById('errorMsg').textContent = 'Failed to reload: ' + e.message;
+                document.getElementById('errorMsg').style.display = '';
+                return;
+            }
+            location.reload();
+        }
     </script>
 </body>
 </html>

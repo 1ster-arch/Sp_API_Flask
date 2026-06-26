@@ -177,15 +177,25 @@ def parse_customer_feedback(payload: dict) -> dict:
 
     review_topics = topics_data.get("topics", []) if isinstance(topics_data, dict) else []
     if review_topics:
-        result["review_topics"] = []
+        positive = []
+        negative = []
         for topic in review_topics:
             metrics = topic.get("metrics", {})
-            result["review_topics"].append({
+            parsed_topic = {
                 "topic": topic.get("topicTitle", ""),
-                "number_of_mentions": metrics.get("numberOfMentions"),
-                "occurrence_percentage": metrics.get("occurrencePercentage"),
-                "star_rating_impact": metrics.get("starRatingImpact"),
-            })
+                "numberOfMentions": metrics.get("numberOfMentions"),
+                "occurrencePercentage": metrics.get("occurrencePercentage"),
+                "starRatingImpact": metrics.get("starRatingImpact"),
+            }
+            impact = metrics.get("starRatingImpact") or 0
+            if impact >= 0:
+                positive.append(parsed_topic)
+            else:
+                negative.append(parsed_topic)
+        result["review_topics"] = {
+            "positiveTopics": positive,
+            "negativeTopics": negative,
+        }
 
     return result
 
@@ -229,4 +239,4 @@ def get_product_data(asin: str) -> tuple:
     except Exception as e:
         errors.append(f"CustomerFeedback: {e}")
 
-    return ProductData(**{k: v for k, v in product.items() if not k.startswith("_") and k != "review_topics"}), errors
+    return ProductData(**{k: v for k, v in product.items() if not k.startswith("_")}), errors

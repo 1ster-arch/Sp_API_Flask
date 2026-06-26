@@ -14,6 +14,7 @@ class ProductData(BaseModel):
     ratings: Optional[float] = None
     review_count: Optional[int] = None
     bullet_points: Optional[list[str]] = None
+    review_topics: Optional[dict] = None
 
 
 class ReviewTopicMetrics(BaseModel):
