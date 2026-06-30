@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen text-ink antialiased;
+    background:
+      radial-gradient(circle at 90% 12%, #d6e2ff 0%, transparent 32%),
+      radial-gradient(circle at 8% 88%, #d7f2e8 0%, transparent 26%),
+      #f3f5fb;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+}

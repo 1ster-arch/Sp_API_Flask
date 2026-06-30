@@ -5,6 +5,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from sp_api_client import get_product_data
@@ -17,7 +19,16 @@ app = FastAPI(title="SP-API Product Dashboard", version="1.0.0")
 templates = Jinja2Templates(directory="templates")
 DATA_DIR = Path(__file__).parent / "data"
 DB_FILE = DATA_DIR / "products_db.json"
+FRONTEND_DIST_DIR = Path(__file__).parent / "frontend" / "dist"
+FRONTEND_INDEX_FILE = FRONTEND_DIST_DIR / "index.html"
+FRONTEND_ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
 DATA_DIR.mkdir(exist_ok=True)
+
+app.mount(
+    "/assets",
+    StaticFiles(directory=FRONTEND_ASSETS_DIR, check_dir=False),
+    name="frontend-assets",
+)
 
 
 @app.exception_handler(LwaException)
@@ -92,7 +103,13 @@ def load_data_from_files():
 
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
+    if FRONTEND_INDEX_FILE.exists():
+        return FileResponse(FRONTEND_INDEX_FILE)
     return templates.TemplateResponse("index.html", {"request": request, "products": load_db()})
+
+@app.get("/api/products")
+async def get_products():
+    return {"products": load_db()}
 
 @app.delete("/api/products")
 async def clear_products():
