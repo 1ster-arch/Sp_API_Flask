@@ -184,6 +184,62 @@
             background: #fff;
         }
 
+        .field.with-suggestions {
+            position: relative;
+        }
+
+        .asin-suggestions {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            z-index: 20;
+            background: #ffffff;
+            border: 1px solid #d4deef;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(21, 41, 77, 0.12);
+            max-height: 240px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .asin-suggestion-item {
+            width: 100%;
+            text-align: left;
+            border: none;
+            border-bottom: 1px solid #edf1fa;
+            background: #fff;
+            padding: 9px 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            height: auto;
+            border-radius: 0;
+        }
+
+        .asin-suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .asin-suggestion-item:hover {
+            background: #f4f8ff;
+        }
+
+        .asin-suggestion-main {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2d4f99;
+        }
+
+        .asin-suggestion-sub {
+            font-size: 12px;
+            color: #58688d;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .controls {
             display: flex;
             gap: 8px;
@@ -468,11 +524,13 @@
                 </div>
                 <div class="card-body">
                     <div class="grid-2">
-                        <div class="field"><input type="text" id="asinSearch" placeholder="ASIN, e.g. B0CMDD18FS"></div>
+                        <div class="field with-suggestions">
+                            <input type="text" id="asinSearch" placeholder="ASIN, e.g. B0CMDD18FS" autocomplete="off">
+                            <div id="asinSuggestions" class="asin-suggestions"></div>
+                        </div>
                         <div class="field"><input type="text" placeholder="Amazon endpoint status: Connected" disabled></div>
                     </div>
                     <div class="controls">
-                        <button class="btn-primary" id="searchBtn" onclick="searchASIN()">Search</button>
                         <button class="btn-subtle" onclick="showAll()">Show All</button>
                         <button class="btn-success" onclick="reloadData()">Reload Data</button>
                         <button class="btn-primary" onclick="fetchASIN()">Fetch from API</button>
@@ -723,7 +781,123 @@
             showSection('section-dashboard');
         }
 
-        function applyAsinFilter(query) {
+        function setupLiveAsinSearch() {
+            const asinInput = document.getElementById('asinSearch');
+            const suggestionsBox = document.getElementById('asinSuggestions');
+            if (!asinInput) return;
+
+            let debounceTimer;
+            asinInput.addEventListener('input', () => {
+                const value = asinInput.value.trim();
+                const errEl = document.getElementById('errorMsg');
+                const hintEl = document.getElementById('searchHint');
+                if (errEl) errEl.style.display = 'none';
+                if (hintEl) hintEl.style.display = 'none';
+
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    if (!value) {
+                        hideAsinSuggestions();
+                        showAll();
+                        return;
+                    }
+                    renderAsinSuggestions(value);
+                    applyAsinFilter(value, { stayOnLookup: true });
+                }, 180);
+            });
+
+            asinInput.addEventListener('focus', () => {
+                const value = asinInput.value.trim();
+                if (value) {
+                    renderAsinSuggestions(value);
+                }
+            });
+
+            asinInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    searchASIN();
+                }
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!suggestionsBox) return;
+                if (event.target === asinInput || suggestionsBox.contains(event.target)) {
+                    return;
+                }
+                hideAsinSuggestions();
+            });
+        }
+
+        function getAsinOptions() {
+            const rows = document.querySelectorAll('tbody tr[data-asin]');
+            const seen = new Set();
+            const options = [];
+
+            rows.forEach(row => {
+                const asinRaw = (row.getAttribute('data-asin') || '').trim();
+                const asin = asinRaw.toUpperCase();
+                if (!asin || seen.has(asin)) return;
+                seen.add(asin);
+                const productTitle = (row.children[1]?.textContent || '').trim();
+                options.push({ asin, productTitle });
+            });
+
+            return options;
+        }
+
+        function hideAsinSuggestions() {
+            const suggestionsBox = document.getElementById('asinSuggestions');
+            if (!suggestionsBox) return;
+            suggestionsBox.style.display = 'none';
+            suggestionsBox.innerHTML = '';
+        }
+
+        function renderAsinSuggestions(query) {
+            const suggestionsBox = document.getElementById('asinSuggestions');
+            const asinInput = document.getElementById('asinSearch');
+            if (!suggestionsBox || !asinInput) return;
+
+            const normalizedQuery = query.toUpperCase();
+            const matches = getAsinOptions()
+                .filter(item => item.asin.includes(normalizedQuery))
+                .slice(0, 8);
+
+            suggestionsBox.innerHTML = '';
+            if (!matches.length) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+
+            matches.forEach(match => {
+                const suggestionBtn = document.createElement('button');
+                suggestionBtn.type = 'button';
+                suggestionBtn.className = 'asin-suggestion-item';
+
+                const mainLine = document.createElement('span');
+                mainLine.className = 'asin-suggestion-main';
+                mainLine.textContent = match.asin;
+
+                const subLine = document.createElement('span');
+                subLine.className = 'asin-suggestion-sub';
+                subLine.textContent = match.productTitle || 'No product title available';
+
+                suggestionBtn.appendChild(mainLine);
+                suggestionBtn.appendChild(subLine);
+                suggestionBtn.addEventListener('click', () => {
+                    asinInput.value = match.asin;
+                    hideAsinSuggestions();
+                    applyAsinFilter(match.asin, { stayOnLookup: true });
+                });
+
+                suggestionsBox.appendChild(suggestionBtn);
+            });
+
+            suggestionsBox.style.display = 'block';
+        }
+
+        function applyAsinFilter(query, options = {}) {
+            const { stayOnLookup = false } = options;
             const rows = document.querySelectorAll('tbody tr[data-asin]');
             const feedbackGroups = document.querySelectorAll('.feedback-group[data-asin]');
             const errEl = document.getElementById('errorMsg');
@@ -731,8 +905,13 @@
             errEl.style.display = 'none';
             hintEl.style.display = 'none';
 
-            showCatalogAndFeedbackSections();
-            setActiveNav('section-catalog');
+            if (stayOnLookup) {
+                setActiveNav('section-dashboard');
+                showSection('section-dashboard');
+            } else {
+                showCatalogAndFeedbackSections();
+                setActiveNav('section-catalog');
+            }
 
             const normalizedQuery = query.toUpperCase();
             let showingRows = 0;
@@ -754,7 +933,9 @@
             if (normalizedQuery && showingRows === 0) {
                 errEl.textContent = 'No matching ASIN found in loaded products.';
                 errEl.style.display = '';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (!stayOnLookup) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
                 return;
             }
 
@@ -763,16 +944,18 @@
                 hintEl.style.display = '';
             }
 
-            const catalogSection = document.getElementById('section-catalog');
-            if (catalogSection) {
-                catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!stayOnLookup) {
+                const catalogSection = document.getElementById('section-catalog');
+                if (catalogSection) {
+                    catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         }
 
         async function searchASIN() {
             const query = document.getElementById('asinSearch').value.trim().toUpperCase();
             const errEl = document.getElementById('errorMsg');
-            const searchBtn = document.getElementById('searchBtn');
+            hideAsinSuggestions();
 
             if (!query) {
                 errEl.textContent = 'Enter an ASIN before searching.';
@@ -781,9 +964,6 @@
             }
 
             errEl.style.display = 'none';
-            searchBtn.disabled = true;
-            const originalLabel = searchBtn.textContent;
-            searchBtn.textContent = 'Searching...';
 
             try {
                 const response = await fetch('/api/fetch/' + encodeURIComponent(query), { method: 'POST' });
@@ -802,22 +982,20 @@
             } catch (error) {
                 errEl.textContent = 'Search fetch failed: ' + error.message;
                 errEl.style.display = '';
-                applyAsinFilter(query);
-            } finally {
-                searchBtn.disabled = false;
-                searchBtn.textContent = originalLabel;
+                applyAsinFilter(query, { stayOnLookup: true });
             }
         }
         function showAll() {
             document.getElementById('asinSearch').value = '';
+            hideAsinSuggestions();
             document.querySelectorAll('tbody tr[data-asin]').forEach(row => row.style.display = '');
             document.querySelectorAll('.feedback-group[data-asin]').forEach(group => group.style.display = '');
             const errEl = document.getElementById('errorMsg');
             const hintEl = document.getElementById('searchHint');
             errEl.style.display = 'none';
             hintEl.style.display = 'none';
-            setActiveNav('section-catalog');
-            showCatalogAndFeedbackSections();
+            setActiveNav('section-dashboard');
+            showSection('section-dashboard');
             document.getElementById('showingCount').textContent = document.querySelectorAll('tbody tr[data-asin]').length;
 
             const nextUrl = new URL(window.location.href);
@@ -864,11 +1042,13 @@
         }
 
         setupNavigation();
+        setupLiveAsinSearch();
 
         const initialAsin = new URLSearchParams(window.location.search).get('asin');
         if (initialAsin) {
             document.getElementById('asinSearch').value = initialAsin;
-            applyAsinFilter(initialAsin);
+            applyAsinFilter(initialAsin, { stayOnLookup: true });
+            renderAsinSuggestions(initialAsin);
         }
     </script>
 </body>
