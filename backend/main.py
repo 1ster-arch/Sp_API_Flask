@@ -15,11 +15,14 @@ from sp_api_auth import LwaException
 
 logger = logging.getLogger(__name__)
 
+BACKEND_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BACKEND_DIR.parent
+
 app = FastAPI(title="SP-API Product Dashboard", version="1.0.0")
-templates = Jinja2Templates(directory="templates")
-DATA_DIR = Path(__file__).parent / "data"
+templates = Jinja2Templates(directory=str(BACKEND_DIR / "templates"))
+DATA_DIR = BACKEND_DIR / "data"
 DB_FILE = DATA_DIR / "products_db.json"
-FRONTEND_DIST_DIR = Path(__file__).parent / "frontend" / "dist"
+FRONTEND_DIST_DIR = PROJECT_ROOT / "frontend" / "dist"
 FRONTEND_INDEX_FILE = FRONTEND_DIST_DIR / "index.html"
 FRONTEND_ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
 DATA_DIR.mkdir(exist_ok=True)

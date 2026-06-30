@@ -1,0 +1,384 @@
+[
+    {
+        "asin": "B0CMDD18FS",
+        "url": "https://www.amazon.com/dp/B0CMDD18FS?psc=1",
+        "product_details": "Seven Minerals New 16 fl oz Glass Bottle Castor Oil Organic Cold Pressed Unrefined Glass Bottle Pack - 100% Pure USDA Certified Organic Hexane Free",
+        "brand": "Seven Minerals",
+        "image_url": "https://m.media-amazon.com/images/I/619hKgzuCYL._SY355_.jpg",
+        "bullet_points": [
+            "COLD PRESSED & USDA CERTIFIED ORGANIC - Seven Minerals New 16 fl oz Glass Bottle Castor Oil is 100% Pure, Cold Pressed, Unrefined, and USDA Certified Organic Hexane Free"
+        ],
+        "origin": "N/A",
+        "price": 28.43,
+        "bsr": 2111,
+        "ratings": 4.8,
+        "review_count": 6359,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Quality",
+                    "numberOfMentions": 1520,
+                    "occurrencePercentage": 24,
+                    "starRatingImpact": 0.3,
+                    "reviewSnippets": [
+                        "Very pure and high quality castor oil",
+                        "Love that it's cold pressed and organic",
+                        "Best quality castor oil I've found"
+                    ],
+                    "subtopics": [
+                        {
+                            "subtopic": "Pure & Organic",
+                            "mentions": 890
+                        },
+                        {
+                            "subtopic": "Cold Pressed",
+                            "mentions": 630
+                        }
+                    ]
+                },
+                {
+                    "topic": "Hair Growth",
+                    "numberOfMentions": 980,
+                    "occurrencePercentage": 15,
+                    "starRatingImpact": 0.2,
+                    "reviewSnippets": [
+                        "My eyelashes have grown noticeably longer",
+                        "Great for promoting hair growth"
+                    ],
+                    "subtopics": [
+                        {
+                            "subtopic": "Eyelash Growth",
+                            "mentions": 340
+                        },
+                        {
+                            "subtopic": "Eyebrow Growth",
+                            "mentions": 290
+                        }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Packaging",
+                    "numberOfMentions": 210,
+                    "occurrencePercentage": 3,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "The pump stopped working after a week",
+                        "Bottle leaked during shipping"
+                    ],
+                    "subtopics": [
+                        {
+                            "subtopic": "Bottle Leak",
+                            "mentions": 120
+                        },
+                        {
+                            "subtopic": "Pump Issues",
+                            "mentions": 90
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B0B5RD1SZ8",
+        "url": "https://www.amazon.com/dp/B0B5RD1SZ8?psc=1",
+        "product_details": "QUEEN OF THE THRONES Organic Golden Castor Oil | 100% Pure for Hair, Skin, Nails, Brows & Lashes | Hexane-Free | USDA Certified [16.9oz (500ml)]",
+        "brand": "QUEEN OF THE THRONES",
+        "image_url": "https://m.media-amazon.com/images/I/51E0SnhngUL._SY450_.jpg",
+        "bullet_points": [
+            "100% Pure Organic Golden Castor Oil for Hair, Skin, Nails, Brows & Lashes | Hexane-Free | USDA Certified [16.9oz (500ml)]"
+        ],
+        "origin": "N/A",
+        "price": 37.47,
+        "bsr": 1666,
+        "ratings": 4.7,
+        "review_count": 15484,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Skin Hydration",
+                    "numberOfMentions": 3120,
+                    "occurrencePercentage": 20,
+                    "starRatingImpact": 0.4,
+                    "reviewSnippets": [
+                        "This golden castor oil makes my skin so soft",
+                        "Highly moisturizing, non-greasy feel",
+                        "Perfect addition to my skincare routine"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Face Moisturizer", "mentions": 1850 },
+                        { "subtopic": "Absorbs Quickly", "mentions": 1270 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Texture Thickness",
+                    "numberOfMentions": 420,
+                    "occurrencePercentage": 3,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "A bit too thick for my liking",
+                        "Hard to spread without a carrier oil"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Too Sticky", "mentions": 250 },
+                        { "subtopic": "Heavy Feel", "mentions": 170 }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B0734B49YK",
+        "url": "https://www.amazon.com/dp/B0734B49YK?psc=1",
+        "product_details": "Handcraft Blends Organic Castor Oil 16 Fl Oz | 100% Pure and Natural | Premium Grade Carrier Oil | Hair, Eyelashes and Eyebrows | Hair and Body | Expeller-Pressed | Hexane-Free",
+        "brand": "Handcraft Blends",
+        "image_url": "https://m.media-amazon.com/images/I/0dt08L._SY606_.jpg",
+        "bullet_points": [
+            "Handcraft Blends Organic Castor Oil 16 Fl Oz | 100% Pure and Natural | Premium Grade Carrier Oil | Hair, Eyelashes and Eyebrows | Hair and Body | Expeller-Pressed | Hexane-Free"
+        ],
+        "origin": "N/A",
+        "price": 9.99,
+        "bsr": 343,
+        "ratings": 4.6,
+        "review_count": 49483,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Eyelash Growth",
+                    "numberOfMentions": 8430,
+                    "occurrencePercentage": 17,
+                    "starRatingImpact": 0.3,
+                    "reviewSnippets": [
+                        "My lashes have never looked this full",
+                        "Works great as an eyelash serum",
+                        "Noticeable results in just 3 weeks"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Thicker Lashes", "mentions": 5120 },
+                        { "subtopic": "Eyebrow Filler", "mentions": 3310 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Scent",
+                    "numberOfMentions": 980,
+                    "occurrencePercentage": 2,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "Has a slight earthy smell that I don't love",
+                        "The scent is a bit strong initially"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Earthy Odor", "mentions": 640 },
+                        { "subtopic": "Strong Aroma", "mentions": 340 }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B01NALN8Q9",
+        "url": "https://www.amazon.com/dp/B01NALN8Q9?psc=1",
+        "product_details": "Kate Blanc Cosmetics Castor Oil Organic for Hair, Lashes, Face (2oz), 100% Pure, Cold Pressed, Hexane Free Eyelash Serum for Thicker-Looking Eyelashes & Eyebrows",
+        "brand": "Kate Blanc Cosmetics",
+        "image_url": "https://m.media-amazon.com/images/I/61ykezZRbtWL._SX679_.jpg",
+        "bullet_points": [
+            "Kate Blanc Cosmetics Castor Oil Organic for Hair, Lashes, Face (2oz), 100% Pure, Cold Pressed, Hexane Free Eyelash Serum for Thicker-Looking Eyelashes & Eyebrows"
+        ],
+        "origin": "N/A",
+        "price": 7.99,
+        "bsr": 364,
+        "ratings": 4.5,
+        "review_count": 118073,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Value for Money",
+                    "numberOfMentions": 21450,
+                    "occurrencePercentage": 18,
+                    "starRatingImpact": 0.4,
+                    "reviewSnippets": [
+                        "Incredible price for such a large quantity",
+                        "Lasts for months, well worth the price",
+                        "Affordable and high quality product"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Great Price", "mentions": 13200 },
+                        { "subtopic": "Long Lasting", "mentions": 8250 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Applicator Wand",
+                    "numberOfMentions": 3540,
+                    "occurrencePercentage": 3,
+                    "starRatingImpact": -0.2,
+                    "reviewSnippets": [
+                        "The included spoolies are a bit stiff",
+                        "Wish the brushes were slightly softer"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Stiff Spoolie", "mentions": 2100 },
+                        { "subtopic": "Brush Quality", "mentions": 1440 }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B0CLJXSJFM",
+        "url": "https://www.amazon.com/dp/B0CLJXSJFM?psc=1",
+        "product_details": "VITAL AFFAIR Pure Castor Oil Organic Cold Pressed Unrefined Glass Bottle-USDA Certified for Castor Oil Pack Wrap for Face, Hair Growth, Eyelashes, Eyebrows-16oz",
+        "brand": "VITAL AFFAIR",
+        "image_url": "https://m.media-amazon.com/images/I/71znpa8BDCL._SY450_.jpg",
+        "bullet_points": [
+            "VITAL AFFAIR Pure Castor Oil Organic Cold Pressed Unrefined Glass Bottle-USDA Certified for Castor Oil Pack Wrap for Face, Hair Growth, Eyelashes, Eyebrows-16oz"
+        ],
+        "origin": "N/A",
+        "price": 28.98,
+        "bsr": 1666,
+        "ratings": 4.7,
+        "review_count": 15484,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Castor Oil Packs",
+                    "numberOfMentions": 3410,
+                    "occurrencePercentage": 22,
+                    "starRatingImpact": 0.4,
+                    "reviewSnippets": [
+                        "Excellent consistency for my evening oil packs",
+                        "Works wonderfully with my cotton wraps",
+                        "Soothing and high quality for full body use"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Compress Use", "mentions": 2100 },
+                        { "subtopic": "Soothing Effect", "mentions": 1310 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Cap Seal",
+                    "numberOfMentions": 310,
+                    "occurrencePercentage": 2,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "The cap was loose when it arrived",
+                        "Inner foil seal was tricky to peel off cleanly"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Loose Cap", "mentions": 190 },
+                        { "subtopic": "Foil Seal", "mentions": 120 }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B07X38YXYZ",
+        "url": "https://www.amazon.com/dp/B07X38YXYZ?psc=1",
+        "product_details": "Desert Oasis Skincare 100% Pure Organic Jojoba Oil - Premium Cold Pressed Unrefined Oil for Glowing Skin & Hair Strength (8 fl oz)",
+        "brand": "Desert Oasis Skincare",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/71-S2m8f4DL.jpg",
+        "bullet_points": [
+            "ORGANIC JOJOBA OIL - 100% Pure Cold Pressed, Unrefined Moisturizer for Hair, Skin, and Nails. Natural Serum Packed with Vitamins."
+        ],
+        "origin": "US",
+        "price": 14.95,
+        "bsr": 845,
+        "ratings": 4.6,
+        "review_count": 3210,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Cuticle Care",
+                    "numberOfMentions": 680,
+                    "occurrencePercentage": 21,
+                    "starRatingImpact": 0.3,
+                    "reviewSnippets": [
+                        "Perfect for keeping my dry cuticles hydrated",
+                        "Strengthened my brittle nails within a week",
+                        "Great multi-purpose oil for hands and face"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Nail Strength", "mentions": 410 },
+                        { "subtopic": "Dry Hands", "mentions": 270 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Pouring Cap",
+                    "numberOfMentions": 85,
+                    "occurrencePercentage": 2,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "Dispenses a little too quickly from the top",
+                        "Wish it came with a dropper cap instead"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Fast Flow", "mentions": 55 },
+                        { "subtopic": "No Dropper", "mentions": 30 }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "asin": "B0892P9W88",
+        "url": "https://www.amazon.com/dp/B0892P9W88?psc=1",
+        "product_details": "Marrakesh Glow Pure Moroccan Argan Oil - 100% Organic Cold Pressed Liquid Gold for Intense Skin Hydration & Frizz-Free Hair (4 fl oz)",
+        "brand": "Marrakesh Glow",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/61NlU3pP8vL.jpg",
+        "bullet_points": [
+            "PURE MOROCCAN ARGAN OIL - Cold Pressed Argan Oil For Hair, Face, & Skin. Luxuriously Light and Fast-Absorbing Anti-Aging Serum."
+        ],
+        "origin": "N/A",
+        "price": 22.50,
+        "bsr": 1420,
+        "ratings": 4.9,
+        "review_count": 8450,
+        "review_topics": {
+            "positiveTopics": [
+                {
+                    "topic": "Frizz Control",
+                    "numberOfMentions": 2150,
+                    "occurrencePercentage": 25,
+                    "starRatingImpact": 0.5,
+                    "reviewSnippets": [
+                        "Tames my wild flyaways beautifully",
+                        "Leaves a gorgeous shine without looking greasy",
+                        "The best argan oil I've found for curly hair"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Hair Shine", "mentions": 1350 },
+                        { "subtopic": "Flyaway Control", "mentions": 800 }
+                    ]
+                }
+            ],
+            "negativeTopics": [
+                {
+                    "topic": "Price Point",
+                    "numberOfMentions": 190,
+                    "occurrencePercentage": 2,
+                    "starRatingImpact": -0.1,
+                    "reviewSnippets": [
+                        "A bit expensive for a 4oz bottle",
+                        "Great product but pricing is a little premium"
+                    ],
+                    "subtopics": [
+                        { "subtopic": "Premium Cost", "mentions": 120 },
+                        { "subtopic": "Small Size", "mentions": 70 }
+                    ]
+                }
+            ]
+        }
+    }
+]
