@@ -2,6 +2,10 @@ from sp_api.api import CatalogItems, Products, CustomerFeedback
 from sp_api.base import Marketplaces
 from config import SP_API_CREDENTIALS, MARKETPLACE_ID
 from models import ProductData, ReviewTopicMetrics
+from sp_api_auth import AccessTokenCache, LwaException, SPAPIConfig
+
+
+token_cache = AccessTokenCache()
 
 
 def get_marketplace():
@@ -13,12 +17,22 @@ def get_marketplace():
     return marketplace_map.get(MARKETPLACE_ID, Marketplaces.US)
 
 
+def get_authenticated_client_kwargs() -> dict:
+    spapi_config = SPAPIConfig.from_credentials(SP_API_CREDENTIALS)
+    access_token = token_cache.get_lwa_access_token(config=spapi_config)
+    return {
+        "credentials": SP_API_CREDENTIALS,
+        "marketplace": get_marketplace(),
+        "restricted_data_token": access_token,
+    }
+
+
 def fetch_catalog_item(asin: str) -> dict:
     """
     Fetch catalog data for a single ASIN using Catalog Items API v2022-04-01.
     Schema: https://github.com/amzn/selling-partner-api-models/blob/main/models/catalog-items-api-model/catalogItems_2022-04-01.json
     """
-    catalog = CatalogItems(credentials=SP_API_CREDENTIALS, marketplace=get_marketplace())
+    catalog = CatalogItems(**get_authenticated_client_kwargs())
     response = catalog.get_catalog_item(
         asin=asin,
         includedData=["attributes", "images", "productTypes", "summaries", "salesRanks"],
@@ -28,7 +42,7 @@ def fetch_catalog_item(asin: str) -> dict:
 
 def fetch_product_pricing(asin: str) -> dict:
     """Fetch competitive pricing data for a single ASIN."""
-    pricing = Products(credentials=SP_API_CREDENTIALS, marketplace=get_marketplace())
+    pricing = Products(**get_authenticated_client_kwargs())
     response = pricing.get_product_pricing_for_asins(
         asin_list=[asin],
         item_type="Asin",
@@ -42,7 +56,7 @@ def fetch_customer_feedback(asin: str) -> dict:
     Schema: https://github.com/amzn/selling-partner-api-models/blob/main/models/customer-feedback-api-model/customerFeedback_2024-06-01.json
     Uses: get_item_review_topics and get_item_review_trends
     """
-    feedback = CustomerFeedback(credentials=SP_API_CREDENTIALS, marketplace=get_marketplace())
+    feedback = CustomerFeedback(**get_authenticated_client_kwargs())
     result = {}
 
     # Get review trends (overall rating + review count)
@@ -215,6 +229,8 @@ def get_product_data(asin: str) -> tuple:
     try:
         catalog_payload = fetch_catalog_item(asin)
         product.update(parse_catalog_item(catalog_payload))
+    except LwaException:
+        raise
     except Exception as e:
         errors.append(f"Catalog: {e}")
 
@@ -229,6 +245,8 @@ def get_product_data(asin: str) -> tuple:
         if "bsr" not in product or product.get("bsr") is None:
             if "bsr" in pricing_data:
                 product["bsr"] = pricing_data["bsr"]
+    except LwaException:
+        raise
     except Exception as e:
         errors.append(f"Pricing: {e}")
 
@@ -236,6 +254,8 @@ def get_product_data(asin: str) -> tuple:
     try:
         feedback_payload = fetch_customer_feedback(asin)
         product.update(parse_customer_feedback(feedback_payload))
+    except LwaException:
+        raise
     except Exception as e:
         errors.append(f"CustomerFeedback: {e}")
 

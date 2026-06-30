@@ -1,16 +1,44 @@
 import json
+import logging
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
+from fastapi import status
+from fastapi.responses import JSONResponse
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from sp_api_client import get_product_data
+from sp_api_auth import LwaException
+
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="SP-API Product Dashboard", version="1.0.0")
 templates = Jinja2Templates(directory="templates")
 DATA_DIR = Path(__file__).parent / "data"
 DB_FILE = DATA_DIR / "products_db.json"
 DATA_DIR.mkdir(exist_ok=True)
+
+
+@app.exception_handler(LwaException)
+async def handle_lwa_exception(request: Request, exc: LwaException):
+    logger.error(
+        "LWA authorization failed",
+        extra={
+            "path": str(request.url.path),
+            "error_code": exc.error_code_string,
+            "tracking_data": exc.tracking_data,
+        },
+    )
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={
+            "error": {
+                "code": exc.error_code_string,
+                "description": exc.description,
+            }
+        },
+    )
 
 def load_db():
     if not DB_FILE.exists(): return []
